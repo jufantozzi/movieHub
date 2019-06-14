@@ -5,9 +5,9 @@
 
 typedef struct {
 	char nome[100];
+	int ano;
 	char genero[50];
 	char sinopse[5000];
-	int isValid;
 }Movie_Node;
 
 typedef struct {
@@ -17,7 +17,7 @@ typedef struct {
 
 
 Graph *init();
-void loadData(Graph *g);
+void loadGraphValues(Graph *g, Movie_Node **movies, int moviesCount);
 
 char **findRelatedMovies(char *movieTarget, int *n);
 char **findUnrelatedMovies(char *movieTarget, int *n);

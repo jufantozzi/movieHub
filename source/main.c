@@ -5,12 +5,20 @@
 #include "graphTad.h"
 #include "utils.h"
 
+char *moviePath = "assets/movies.txt";
+
 int main(int argc, char const *argv[]){
-	int operation;
+	int operation, moviesCount;
 	char *target;
 
+	Movie_Node **movies = getMovies(moviePath, &moviesCount);
+	//ok
 	Graph *g = init();
-	loadData(g);
+	loadGraphValues(g, movies, moviesCount);
+
+	for(int i=0; i<moviesCount; i++){
+		printf("%s\n", g->adjMatrix[i][i].nome);
+	}
 
 	do{
 		printHeader();
@@ -44,8 +52,10 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	while(operation != EXIT);
-		
-
-	free(g);
+	
+	for(int i=0; i<moviesCount; i++){
+		free(movies[i]);
+	}
+	free(movies); free(g);
 	return 0;
 }
