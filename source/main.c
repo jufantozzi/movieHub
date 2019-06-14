@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]){
 
 	g->nodeList = getMovies(moviePath, &moviesCount);
  
- 	loadGraphValues(g, moviesCount);
+ 	calculateEdges(g, moviesCount);
 
 	do{
 		printHeader();

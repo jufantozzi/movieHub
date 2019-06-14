@@ -7,7 +7,7 @@ Graph *init(){
 	return (Graph*)malloc(sizeof(Graph));
 }
 
-void loadGraphValues(Graph *g, int moviesCount){
+void calculateEdges(Graph *g, int moviesCount){
 	if (moviesCount > MAX_VERTEX) {
 		printf("Maximum size reached.");
 		exit(-1);
