@@ -10,15 +10,11 @@ char *moviePath = "assets/movies.txt";
 int main(int argc, char const *argv[]){
 	int operation, moviesCount;
 	char *target;
-
-	Movie_Node **movies = getMovies(moviePath, &moviesCount);
-	//ok
 	Graph *g = init();
-	loadGraphValues(g, movies, moviesCount);
 
-	for(int i=0; i<moviesCount; i++){
-		printf("%s\n", g->adjMatrix[i][i].nome);
-	}
+	g->nodeList = getMovies(moviePath, &moviesCount);
+ 
+ 	loadGraphValues(g, moviesCount);
 
 	do{
 		printHeader();
@@ -54,8 +50,8 @@ int main(int argc, char const *argv[]){
 	while(operation != EXIT);
 	
 	for(int i=0; i<moviesCount; i++){
-		free(movies[i]);
+		free(g->nodeList[i]);
 	}
-	free(movies); free(g);
+	free(g->nodeList); free(g);
 	return 0;
 }

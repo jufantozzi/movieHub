@@ -24,6 +24,7 @@ Movie_Node **getMovies(char *moviePath, int *totalMovies){
 	}
 	printf("moviescount = %d\n", moviesCount);
 	*totalMovies = moviesCount;
+	fclose(fp);
 	return movies;
 }
 
@@ -37,4 +38,8 @@ int op(){
 	int i;
 	scanf("%d%*c", &i);
 	return i; 	
+}
+
+int lexicalCompare(char *s1, char *s2){
+	return 1;
 }

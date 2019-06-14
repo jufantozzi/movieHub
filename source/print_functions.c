@@ -63,3 +63,11 @@ void printSameCategory(Graph *g, char *movieTarget){
 	return;
 }
 
+void printMatrix(Graph *g, int moviesCount){
+	puts("-------------matrix-------------");
+	for(int i=0; i<moviesCount; i++){
+		for(int j=0; j<moviesCount; j++)
+			printf("%d  ", g->m[i][j]);
+		puts("");
+	}
+}

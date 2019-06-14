@@ -1,18 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphTad.h"
+#include "utils.h"
 
 Graph *init(){
 	return (Graph*)malloc(sizeof(Graph));
 }
 
-void loadGraphValues(Graph *g, Movie_Node **movies, int moviesCount){
+void loadGraphValues(Graph *g, int moviesCount){
 	if (moviesCount > MAX_VERTEX) {
 		printf("Maximum size reached.");
 		exit(-1);
 	}
+	//calculate edge values
 	for(int i=0; i<moviesCount; i++){
-		g->adjMatrix[i][i] = *movies[i];
+		for(int j=0; j<moviesCount; j++){
+			if(i != j) 
+				g->m[i][j] = lexicalCompare(g->nodeList[i]->sinopse, 
+					g->nodeList[j]->sinopse);
+		}
 	}
 }
 

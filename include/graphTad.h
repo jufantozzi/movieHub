@@ -8,16 +8,20 @@ typedef struct {
 	int ano;
 	char genero[50];
 	char sinopse[5000];
+
+	
+	char isVertex, isEdge;
 }Movie_Node;
 
 typedef struct {
 	int numVertex;
-	Movie_Node adjMatrix[MAX_VERTEX][MAX_VERTEX];	
+	Movie_Node **nodeList;
+	int m[MAX_VERTEX][MAX_VERTEX];	
 }Graph;
 
 
 Graph *init();
-void loadGraphValues(Graph *g, Movie_Node **movies, int moviesCount);
+void loadGraphValues(Graph *g, int moviesCount);
 
 char **findRelatedMovies(char *movieTarget, int *n);
 char **findUnrelatedMovies(char *movieTarget, int *n);
