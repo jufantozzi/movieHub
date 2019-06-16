@@ -2,17 +2,20 @@
 #define GRAPHTAD_H
 
 #define MAX_VERTEX 200
+#define MAX_RELATED 5
 
 typedef struct {
 	char nome[100];
 	int ano;
 	char genero[50];
 	char sinopse[5000];
+	double *sinopseVec;
 }Movie_Node;
 
 typedef struct {
 	int numVertex;
-	int m[MAX_VERTEX][MAX_VERTEX];	
+	double m[MAX_VERTEX][MAX_VERTEX];
+	int p[MAX_VERTEX][MAX_VERTEX];
 	Movie_Node **nodeList;
 }Graph;
 
@@ -20,8 +23,8 @@ typedef struct {
 Graph *init();
 void calculateEdges(Graph *g, int moviesCount);
 
-char **findRelatedMovies(char *movieTarget, int *n);
-char **findUnrelatedMovies(char *movieTarget, int *n);
-char **findSameCategory(char *movieTarget, int *n);
+char **findRelatedMovies(Graph *g, char *movieTarget, int *n);
+char **findUnrelatedMovies(Graph *g, char *movieTarget, int *n);
+char **findSameCategory(Graph *g, char *movieTarget, int *n);
 
 #endif

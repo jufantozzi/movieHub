@@ -13,7 +13,8 @@ int main(int argc, char const *argv[]){
 	Graph *g = init();
 
 	g->nodeList = getMovies(moviePath, &moviesCount);
- 
+	g->numVertex = moviesCount;
+	
  	calculateEdges(g, moviesCount);
 
 	do{

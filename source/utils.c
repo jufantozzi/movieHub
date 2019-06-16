@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #include "graphTad.h"
 
 Movie_Node **getMovies(char *moviePath, int *totalMovies){
@@ -40,6 +42,23 @@ int op(){
 	return i; 	
 }
 
-int lexicalCompare(char *s1, char *s2){
-	return 1;
+double lexicalCompare(double *u, double *v, int n){
+	double dot = 0;
+	for (int i = 0; i < n; i++) dot += u[i] * v[i];
+	return fabs(dot);
+}
+
+void normalize(double *v, int n){
+	double s = 0;
+	for (int i = 0; i < n; i++) s += 1.0 * v[i] * v[i];
+	s = sqrt(s);
+	for (int i = 0; i < n; i++) v[i] /= s;
+}
+
+int getTargetIndex(Graph *g, char *movieTarget){
+	int i;
+	for(i=0; i<g->numVertex; i++){
+		if(!strcmp(movieTarget, g->nodeList[i]->nome)) break;
+	}
+	return i;
 }

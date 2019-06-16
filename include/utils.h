@@ -5,7 +5,8 @@
 
 int op();
 char *getTarget();
-int lexicalCompare(char *s1, char *s2);
+double lexicalCompare(double *u, double *v, int n);
 Movie_Node **getMovies(char *moviePath, int *moviesCount);
+void normalize(double *v, int n);
 
 #endif

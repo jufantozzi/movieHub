@@ -26,7 +26,7 @@ void printError(){
 
 void printRelatedMovies(Graph *g, char *movieTarget){
 	int n;
-	char **relatedMovies = findRelatedMovies(movieTarget, &n);
+	char **relatedMovies = findRelatedMovies(g, movieTarget, &n);
 	
 	for(int i=0;i<n;i++){
 		printf("%s\n", relatedMovies[i]);
@@ -39,7 +39,7 @@ void printRelatedMovies(Graph *g, char *movieTarget){
 
 void printUnrelatedMovies(Graph *g, char *movieTarget){
 	int n;
-	char **unrelatedMovies = findUnrelatedMovies(movieTarget, &n);
+	char **unrelatedMovies = findUnrelatedMovies(g, movieTarget, &n);
 	
 	for(int i=0;i<n;i++){
 		printf("%s\n", unrelatedMovies[i]);
@@ -52,7 +52,7 @@ void printUnrelatedMovies(Graph *g, char *movieTarget){
 
 void printSameCategory(Graph *g, char *movieTarget){
 	int n;
-	char **sameCategory = findSameCategory(movieTarget, &n);
+	char **sameCategory = findSameCategory(g, movieTarget, &n);
 	
 	for(int i=0;i<n;i++){
 		printf("%s\n", sameCategory[i]);
