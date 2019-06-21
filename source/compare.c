@@ -36,3 +36,9 @@ int get(trie_t *t, char *str){
     if (node->id == -1) return node->id = t->size++;
     return node->id;
 }
+
+// void purge(trie_t *t){
+//     for(int i=0; i<t->size; i++){
+//         pur
+//     }   
+// }

@@ -67,16 +67,16 @@ void calculateEdges(Graph *g, int moviesCount){
 			}
 		}
 		qsort_r(g->p[i], moviesCount, sizeof(int), compar_adj, g->m[i]);
-		// for (int k = 0; k < moviesCount; k++) {
-		// 	int j = g->p[i][k];
-		// 	printf("%s %s %lf\n", g->nodeList[i]->nome, g->nodeList[j]->nome, g->m[i][j]);
-		// }
 	}
 
-	//free nwords
-	//free trie
+	for(int i=0; i<nWords; i++){
+		free(words[i]);
+	}
+	free(words);
 	free(start);
 	free(end);
+
+	//purge(trie);
 }
 //findRelatedMovies returns the first MAX_RELATED most related movies 
 char **findRelatedMovies(Graph *g, char *movieTarget){
@@ -87,6 +87,7 @@ char **findRelatedMovies(Graph *g, char *movieTarget){
 	}
 	char **relatedMovies = malloc(sizeof(char*) * MAX_RELATED);
 	for(int i=0; i<MAX_RELATED; i++){
+		//last ones will have the highest score > most related.
 		Movie_Node *r = g->nodeList[g->p[movieTargetIndex][g->numVertex-1-i]];
 		relatedMovies[i] = malloc(sizeof(char) * strlen(r->nome));
 		strcpy(relatedMovies[i], r->nome);
@@ -103,7 +104,7 @@ char **findUnrelatedMovies(Graph *g, char *movieTarget){
 	}
 	char **unrelatedMovies = malloc(sizeof(char*) * MAX_RELATED);
 	for(int i=0; i<MAX_RELATED; i++){
-									//i+1 pois i=0 > é o proprio filme
+		//first ones will have the lowest score > most unrelated (i+1 because i = 0 > self).
 		Movie_Node *r = g->nodeList[g->p[movieTargetIndex][i+1]];
 		unrelatedMovies[i] = malloc(sizeof(char) * strlen(r->nome));
 		strcpy(unrelatedMovies[i], r->nome);
