@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "print_functions.h"
 #include "graphTad.h"
@@ -36,8 +37,8 @@ int main(int argc, char const *argv[]){
 				free(target);
 				break;
 			case 3:
-				target = getTarget();
 				printSelectTarget();
+				target = getTarget();
 				printSameCategory(g, target);
 				free(target);
 				break;
@@ -45,6 +46,7 @@ int main(int argc, char const *argv[]){
 				printExit();
 				break;
 			default:
+				fseek(stdin, 0, SEEK_END);
 				printError();
 		}
 	}

@@ -8,8 +8,6 @@
 #include "compare.h"
 #include "utils.h"
 
-#define _GNU_SOURCE
-
 Graph *init(){
 	return (Graph*)malloc(sizeof(Graph));
 }
@@ -23,7 +21,6 @@ int compar_adj(const void *a, const void *b, void *r) {
 	return 1;
 }
 
-// 2089. Elizabeth Shaw (Noomi Rapace) e Charlie Holloway (Logan Marshall-Green) sãoexploradores que encontram a mesma pintura em várias cavernas na Terra. Com base nisto,eles desenvolvem uma teoria em que a pintura aponta para um lugar específico do universo,que teria alguma relação com o início da vida no planeta. A dupla convence um milionário,Peter Weyland (Guy Pearce), a bancar uma cara expedição interestelar para investigar oassunto. Desta forma, Elizabeth e Charlie entram para a tripulação da nave Prometheus,composta pelo robô David (Michael Fassbender), a diretora Meredith Vickers (CharlizeTheron), o capitão Janek (Idris Elba), entre outros. Todos, com exceção de David, hibernamem sono criogênico até que a nave chegue ao objetivo, o que acontece em 2093. Encantadoscom a descoberta de um novo mundo e a possibilidade de revelarem o segredo da origem davida na Terra, Elizabeth e Charlie não percebem que o local é também bastante perigoso.
 void calculateEdges(Graph *g, int moviesCount){
 	if (moviesCount > MAX_VERTEX) {
 		printf("Maximum size reached.");
@@ -70,30 +67,104 @@ void calculateEdges(Graph *g, int moviesCount){
 			}
 		}
 		qsort_r(g->p[i], moviesCount, sizeof(int), compar_adj, g->m[i]);
-		for (int k = 0; k < moviesCount; k++) {
-			int j = g->p[i][k];
-			printf("%s %s %lf\n", g->nodeList[i]->nome, g->nodeList[j]->nome, g->m[i][j]);
-		}
+		// for (int k = 0; k < moviesCount; k++) {
+		// 	int j = g->p[i][k];
+		// 	printf("%s %s %lf\n", g->nodeList[i]->nome, g->nodeList[j]->nome, g->m[i][j]);
+		// }
 	}
 
+	//free nwords
+	//free trie
 	free(start);
 	free(end);
 }
-//findRelatedMovies runs a graph search algorithm for related movies 
-char **findRelatedMovies(Graph *g, char *movieTarget, int *n){
-	int index = getTargetIndex(g, movieTarget);
+//findRelatedMovies returns the first MAX_RELATED most related movies 
+char **findRelatedMovies(Graph *g, char *movieTarget){
+	int movieTargetIndex = getTargetIndex(g, movieTarget);
+	if (movieTargetIndex == -1) {
+		puts("Filme não encontrado.");
+		return NULL;
+	}
+	char **relatedMovies = malloc(sizeof(char*) * MAX_RELATED);
 	for(int i=0; i<MAX_RELATED; i++){
-		Movie_Node *r = g->nodeList[g->p[index][g->numVertex-1-i]];
+		Movie_Node *r = g->nodeList[g->p[movieTargetIndex][g->numVertex-1-i]];
+		relatedMovies[i] = malloc(sizeof(char) * strlen(r->nome));
+		strcpy(relatedMovies[i], r->nome);
 	}	
-	return NULL;
+	return relatedMovies;
 }
 
-//findUnrelatedMovies runs a graph search algorithm for unrelated movies 
-char **findUnrelatedMovies(Graph *g, char *movieTarget, int *n){
-	return NULL;
+//findUnrelatedMovies returns the first MAX_RELATED most unrelated movies 
+char **findUnrelatedMovies(Graph *g, char *movieTarget){
+	int movieTargetIndex = getTargetIndex(g, movieTarget);
+	if (movieTargetIndex == -1) {
+		puts("Filme não encontrado.");
+		return NULL;
+	}
+	char **unrelatedMovies = malloc(sizeof(char*) * MAX_RELATED);
+	for(int i=0; i<MAX_RELATED; i++){
+									//i+1 pois i=0 > é o proprio filme
+		Movie_Node *r = g->nodeList[g->p[movieTargetIndex][i+1]];
+		unrelatedMovies[i] = malloc(sizeof(char) * strlen(r->nome));
+		strcpy(unrelatedMovies[i], r->nome);
+	}	
+	return unrelatedMovies;
 }
 
-//findSameCategory runs a graph search algorithm for same category movies 
+//findSameCategory returns all movies that share any category 
 char **findSameCategory(Graph *g, char *movieTarget, int *n){
-	return NULL;
+	int i = 0, matchCount = 0;
+	
+	int movieTargetIndex = getTargetIndex(g, movieTarget);
+	if (movieTargetIndex == -1) {
+		puts("Filme não encontrado.");
+		return NULL;
+	}
+	
+	char **sameCategory = malloc(sizeof(char*));
+	for(;i<g->numVertex; i++){
+		if(hasMatchingCategory(g->nodeList[movieTargetIndex], g->nodeList[i])
+		 && movieTargetIndex != i){
+			sscanf(g->nodeList[i]->nome, "%m[^\n]", &sameCategory[matchCount]);
+			sameCategory = realloc(sameCategory, sizeof(char*) * (matchCount++ + 2));
+		}
+	}
+	*n = matchCount;
+	if (*n == 0) {
+		free(sameCategory);
+		return NULL;
+	} 
+	return sameCategory;
+}
+
+int hasMatchingCategory(Movie_Node *a, Movie_Node *b){
+	//get array of strings of categories from A
+	char **categoriesA = malloc(sizeof(char*) * 10);
+	char **categoriesB = malloc(sizeof(char*) * 10);
+	char saveptra[100];
+	char saveptrb[100];
+	int i=0, j=0;
+	strcpy(saveptra, a->genero);
+	strcpy(saveptrb, b->genero);
+	categoriesA[i++] = strtok(a->genero, ", ");
+	while((categoriesA[i++] = strtok(NULL, ", ")));
+	categoriesB[j++] = strtok(b->genero, ", ");
+	while((categoriesB[j++] = strtok(NULL, ", ")));
+
+	int found = 0;
+	//printf("comparacao dos filmes [%s] e [%s]\n", a->nome, b->nome);
+	for(int k=0; k<i-1; k++){
+		for(int l=0; l<j-1; l++){
+			//printf("comparando: %s - %s\n", categoriesA[k], categoriesB[l]);
+			if(!strcmp(categoriesA[k], categoriesB[l])){
+				found++;
+				break;
+			}
+		}
+	}
+	free(categoriesA);
+	free(categoriesB);
+	strcpy(a->genero, saveptra);
+	strcpy(b->genero, saveptrb);
+	return found;
 }

@@ -23,8 +23,10 @@ typedef struct {
 Graph *init();
 void calculateEdges(Graph *g, int moviesCount);
 
-char **findRelatedMovies(Graph *g, char *movieTarget, int *n);
-char **findUnrelatedMovies(Graph *g, char *movieTarget, int *n);
+char **findRelatedMovies(Graph *g, char *movieTarget);
+char **findUnrelatedMovies(Graph *g, char *movieTarget);
 char **findSameCategory(Graph *g, char *movieTarget, int *n);
+
+int hasMatchingCategory(Movie_Node *a, Movie_Node *b);
 
 #endif

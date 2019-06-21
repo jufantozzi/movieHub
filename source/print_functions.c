@@ -25,10 +25,10 @@ void printError(){
 }
 
 void printRelatedMovies(Graph *g, char *movieTarget){
-	int n;
-	char **relatedMovies = findRelatedMovies(g, movieTarget, &n);
-	
-	for(int i=0;i<n;i++){
+	char **relatedMovies = findRelatedMovies(g, movieTarget);
+	if(relatedMovies == NULL) return;
+	printf("Filmes relacionados a [%s]\n", movieTarget);
+	for(int i=0;i<MAX_RELATED;i++){
 		printf("%s\n", relatedMovies[i]);
 		free(relatedMovies[i]);
 	}
@@ -38,10 +38,10 @@ void printRelatedMovies(Graph *g, char *movieTarget){
 }
 
 void printUnrelatedMovies(Graph *g, char *movieTarget){
-	int n;
-	char **unrelatedMovies = findUnrelatedMovies(g, movieTarget, &n);
-	
-	for(int i=0;i<n;i++){
+	char **unrelatedMovies = findUnrelatedMovies(g, movieTarget);
+	if(unrelatedMovies == NULL) return;
+	printf("Filmes não relacionados a [%s]\n", movieTarget);
+	for(int i=0;i<MAX_RELATED;i++){
 		printf("%s\n", unrelatedMovies[i]);
 		free(unrelatedMovies[i]);
 	}
@@ -53,7 +53,9 @@ void printUnrelatedMovies(Graph *g, char *movieTarget){
 void printSameCategory(Graph *g, char *movieTarget){
 	int n;
 	char **sameCategory = findSameCategory(g, movieTarget, &n);
-	
+	if(sameCategory == NULL) return;
+
+	printf("Filmes de mesma categoria que [%s]:\n", movieTarget);
 	for(int i=0;i<n;i++){
 		printf("%s\n", sameCategory[i]);
 		free(sameCategory[i]);
@@ -67,7 +69,7 @@ void printMatrix(Graph *g, int moviesCount){
 	puts("-------------matrix-------------");
 	for(int i=0; i<moviesCount; i++){
 		for(int j=0; j<moviesCount; j++)
-			printf("%d  ", g->m[i][j]);
+			printf("%lf  ", g->m[i][j]);
 		puts("");
 	}
 }

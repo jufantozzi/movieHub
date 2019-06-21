@@ -23,7 +23,7 @@ DEPS=$(wildcard $(INCDIR)/*.h)
 
 # Finally something easy to read!
 CC=gcc
-CFLAGS=-g -std=gnu99 -Wall -I./$(INCDIR)
+CFLAGS=-g -Wall -I./$(INCDIR)
 # -O3 -Wall -Wextra -I./$(INCDIR)
 
 # Library links (example: -lm for math lib)

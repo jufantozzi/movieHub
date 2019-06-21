@@ -24,7 +24,6 @@ Movie_Node **getMovies(char *moviePath, int *totalMovies){
 		moviesCount++;
 		movies = (Movie_Node**)realloc(movies, sizeof(Movie_Node*) * (moviesCount+1));
 	}
-	printf("moviescount = %d\n", moviesCount);
 	*totalMovies = moviesCount;
 	fclose(fp);
 	return movies;
@@ -32,7 +31,7 @@ Movie_Node **getMovies(char *moviePath, int *totalMovies){
 
 char *getTarget() {
 	char *s;
-	scanf("%ms%*c", &s);
+	scanf("%m[^\n]%*c", &s);
 	return s; 
 }
 
@@ -56,9 +55,8 @@ void normalize(double *v, int n){
 }
 
 int getTargetIndex(Graph *g, char *movieTarget){
-	int i;
-	for(i=0; i<g->numVertex; i++){
-		if(!strcmp(movieTarget, g->nodeList[i]->nome)) break;
+	for(int i=0; i<g->numVertex; i++){
+		if(!strcmp(movieTarget, g->nodeList[i]->nome)) return i;
 	}
-	return i;
+	return -1; 
 }
